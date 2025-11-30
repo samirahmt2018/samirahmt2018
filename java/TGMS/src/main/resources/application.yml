@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: terra-gold-mining-system
+  datasource:
+    url: jdbc:h2:mem:testdb  # For dev; profile for postgres
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+  profiles:
+    active: dev
+---
+spring:
+  profiles: postgres
+  datasource:
+    url: jdbc:postgresql://localhost:5432/terragold
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
