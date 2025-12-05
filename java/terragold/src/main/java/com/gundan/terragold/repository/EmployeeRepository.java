@@ -14,6 +14,7 @@ public interface EmployeeRepository extends
 
     @Query("SELECT e FROM Employee e WHERE e.terminationDate IS NULL")
     List<Employee> findActiveEmployees();
-
+    long countByTerminationDateIsNull();
+    List<Employee> findAllByTerminationDateIsNull();
     List<Employee> findByRole(EmployeeRole role);
 }

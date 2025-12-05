@@ -4,6 +4,8 @@ import com.gundan.terragold.enums.UnitOfMeasurement;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.OffsetDateTime;
+
 @Entity
 @Table(name = "item_types")
 @Getter
@@ -21,8 +23,7 @@ public class ItemType {
     @NonNull
     @Enumerated(EnumType.STRING)
     private UnitOfMeasurement unitOfMeasurement;
-
     @Column(updatable = false)
-    private java.time.LocalDateTime createdAt;
-    private java.time.LocalDateTime updatedAt;
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
 }

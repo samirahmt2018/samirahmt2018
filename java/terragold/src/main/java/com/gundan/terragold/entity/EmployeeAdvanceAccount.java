@@ -3,6 +3,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+
 @Entity
 @Table(name = "employee_advance_accounts")
 @Getter
@@ -26,18 +28,7 @@ public class EmployeeAdvanceAccount {
     private Boolean isActive = true;
 
     @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
+  
 }

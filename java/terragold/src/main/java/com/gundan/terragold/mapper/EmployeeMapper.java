@@ -16,7 +16,10 @@ public class EmployeeMapper {
                 e.getDepartment(),
                 e.getHireDate(),
                 e.getTerminationDate(),
-                e.getMonthlySalary(),
+                e.getBaseSalary(),
+                e.getHousingAllowance(),
+                e.getTransportAllowance(),
+                e.getOtherFixedAllowance(),
                 e.getNotes(), // MAPPED THE NEW FIELD
                 e.getCreatedAt(),
                 e.getUpdatedAt()
@@ -31,7 +34,10 @@ public class EmployeeMapper {
                 .role(req.role())
                 .department(req.department())
                 .hireDate(req.hireDate())
-                .monthlySalary(req.monthlySalary())
+                .baseSalary(req.baseSalary())
+                .housingAllowance(req.housingAllowance())
+                .transportAllowance(req.transportAllowance())
+                .otherFixedAllowance(req.otherFixedAllowance())
                 .notes(req.notes())
                 .build();
     }

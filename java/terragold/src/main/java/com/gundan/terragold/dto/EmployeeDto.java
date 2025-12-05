@@ -5,6 +5,7 @@ import com.gundan.terragold.enums.EmployeeRole;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public record EmployeeDto(
         Long id,
@@ -15,8 +16,11 @@ public record EmployeeDto(
         String department,
         LocalDate hireDate,
         LocalDate terminationDate,
-        BigDecimal monthlySalary,
+        BigDecimal baseSalary,
+        BigDecimal housingAllowance,
+        BigDecimal transportAllowance,
+        BigDecimal otherFixedAllowance,
         String notes, // NEW FIELD ADDED
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        OffsetDateTime createdAt,
+        OffsetDateTime updatedAt
 ) {}

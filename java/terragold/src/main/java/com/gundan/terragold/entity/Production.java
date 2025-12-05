@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 @Entity
 
@@ -33,4 +34,7 @@ public class Production {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "operator_id")
     private Employee operator;
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
+
 }

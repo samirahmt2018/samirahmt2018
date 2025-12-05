@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @MappedSuperclass
 @Getter
@@ -24,6 +25,6 @@ public abstract class AbstractExpense {
     private String notes;
 
     @Column(updatable = false)
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
 }

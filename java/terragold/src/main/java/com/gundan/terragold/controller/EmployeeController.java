@@ -3,6 +3,7 @@ package com.gundan.terragold.controller;
 import com.gundan.terragold.dto.EmployeeDto;
 import com.gundan.terragold.dto.request.EmployeeCreateRequest;
 import com.gundan.terragold.dto.request.base.*;
+import com.gundan.terragold.enums.SortingDirection;
 import com.gundan.terragold.mapper.EmployeeMapper;
 import com.gundan.terragold.repository.EmployeeRepository;
 import com.gundan.terragold.service.EmployeeService;
@@ -33,10 +34,9 @@ public class EmployeeController {
     ------------------------------------------------------- */
     @GetMapping
     public Object getEmployees(
-            @RequestParam(required = false, defaultValue = "1") Integer page,
-            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) PaginationField pagination,
             @RequestParam(required = false) String sortField,
-            @RequestParam(required = false, defaultValue = "ASC") String sortDir,
+            @RequestParam(required = false, defaultValue = "ASC") SortingDirection sortDir,
             @RequestParam(required = false) String filters,
             @RequestParam(required = false) String orFilters
     ) {
@@ -51,7 +51,7 @@ public class EmployeeController {
                 : List.of();
 
         ListQueryRequest req = new ListQueryRequest(
-                new PaginationField(page, pageSize),
+                pagination,
                 parsedFilters,
                 parsedOrFilters,
                 new SortField(sortField, sortDir)

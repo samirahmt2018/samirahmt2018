@@ -3,6 +3,8 @@ package com.gundan.terragold.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.OffsetDateTime;
+
 @Entity
 @Table(name = "machines")
 @Getter
@@ -19,6 +21,6 @@ public class Machine {
     private String description;
     //timestamps createdAt and updatedAt
     @Column(updatable = false)
-    private java.time.LocalDateTime createdAt;
-    private java.time.LocalDateTime updatedAt;
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
 }

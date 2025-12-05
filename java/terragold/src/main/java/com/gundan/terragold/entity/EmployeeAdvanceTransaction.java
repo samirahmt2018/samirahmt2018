@@ -5,6 +5,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+
 import com.gundan.terragold.enums.AdvanceTransactionType;
 
 @Entity
@@ -50,8 +52,8 @@ public class EmployeeAdvanceTransaction {
 
 
     @Column(updatable = false)
-    private LocalDateTime createdAt;
-    private  LocalDateTime updatedAt;
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
     @PrePersist
     void calculateBalances() {
         this.balanceBefore = account.getCurrentBalance();
@@ -60,7 +62,6 @@ public class EmployeeAdvanceTransaction {
         } else {
             this.balanceAfter = balanceBefore.subtract(amount);
         }
-        this.createdAt = LocalDateTime.now();
 
         // Update the running balance in the account
         account.setCurrentBalance(this.balanceAfter);

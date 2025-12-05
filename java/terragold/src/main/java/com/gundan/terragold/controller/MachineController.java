@@ -3,6 +3,7 @@ package com.gundan.terragold.controller;
 import com.gundan.terragold.dto.MachineDto;
 import com.gundan.terragold.dto.request.MachineCreateRequest;
 import com.gundan.terragold.dto.request.base.*;
+import com.gundan.terragold.enums.SortingDirection;
 import com.gundan.terragold.mapper.EmployeeMapper;
 import com.gundan.terragold.mapper.MachineMapper;
 import com.gundan.terragold.repository.MachineRepository;
@@ -36,10 +37,9 @@ public class MachineController {
    ------------------------------------------------------- */
     @GetMapping
     public Object getMachines(
-            @RequestParam(required = false, defaultValue = "1") Integer page,
-            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) PaginationField pagination,
             @RequestParam(required = false) String sortField,
-            @RequestParam(required = false, defaultValue = "ASC") String sortDir,
+            @RequestParam(required = false, defaultValue = "ASC") SortingDirection sortDir,
             @RequestParam(required = false) String filters,
             @RequestParam(required = false) String orFilters
     ) {
@@ -54,7 +54,7 @@ public class MachineController {
                 : List.of();
 
         ListQueryRequest req = new ListQueryRequest(
-                new PaginationField(page, pageSize),
+                pagination,
                 parsedFilters,
                 parsedOrFilters,
                 new SortField(sortField, sortDir)

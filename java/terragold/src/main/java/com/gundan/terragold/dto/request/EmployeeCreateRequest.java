@@ -24,7 +24,14 @@ public record EmployeeCreateRequest(
         LocalDate hireDate,
 
         @NotNull(message = "Monthly salary is required") // VALIDATION ADDED
-        BigDecimal monthlySalary,
+        BigDecimal baseSalary,
+
+        @NotNull(message = "Housing allowance is required")
+        BigDecimal housingAllowance,
+        @NotNull(message = "Transport allowance is required")
+        BigDecimal transportAllowance,
+        @NotNull(message = "Other fixed allowance is required")
+        BigDecimal otherFixedAllowance,
 
         String notes
 ) {}

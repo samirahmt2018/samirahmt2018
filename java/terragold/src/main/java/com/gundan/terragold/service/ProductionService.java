@@ -1,64 +1,79 @@
 package com.gundan.terragold.service;
 
-import com.gundan.terragold.entity.Employee;
-import com.gundan.terragold.entity.Production;
-import com.gundan.terragold.repository.ProductionRepository;
+import com.gundan.terragold.dto.*;
+import com.gundan.terragold.dto.request.ProductionCreateRequest;
+import com.gundan.terragold.dto.request.ProductionUpdateRequest;
+import com.gundan.terragold.entity.*;
+import com.gundan.terragold.mapper.ProductionMapper;
+import com.gundan.terragold.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class ProductionService {
 
-    private final ProductionRepository productionRepo;
+    private final ProductionRepository productionRepository;
+    private final EmployeeRepository employeeRepository;
 
-    /**
-     * Record a daily production entry using individual parameters.
-     */
     @Transactional
-    public Production logDaily(BigDecimal grams, BigDecimal purity, Long operatorId, String batchId) {
-        Employee operator = Employee.builder().id(operatorId).build();
+    public ProductionDto createProduction(ProductionCreateRequest request) {
+        Employee operator = employeeRepository.findById(request.getOperatorId())
+                .orElseThrow(() -> new RuntimeException("Operator not found"));
+
         Production production = Production.builder()
-                .productionDate(LocalDate.now())
-                .quantityGrams(grams)
-                .gradePurity(purity)
+                .productionDate(request.getProductionDate())
+                .quantityGrams(request.getQuantityGrams())
+                .gradePurity(request.getGradePurity())
+                .sourceBatchId(request.getSourceBatchId())
                 .operator(operator)
-                .sourceBatchId(batchId)
                 .build();
-        return productionRepo.save(production);
+
+        Production saved = productionRepository.save(production);
+        return ProductionMapper.toDto(saved);
     }
 
-    /**
-     * Record a daily production entry using full Production entity (from controller).
-     */
     @Transactional
-    public Production logDaily(Production production) {
-        if (production.getProductionDate() == null) {
-            production.setProductionDate(LocalDate.now());
+    public ProductionDto updateProduction(Long id, ProductionUpdateRequest request) {
+        Production production = productionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Production record not found"));
+
+        if (request.getOperatorId() != null) {
+            Employee operator = employeeRepository.findById(request.getOperatorId())
+                    .orElseThrow(() -> new RuntimeException("Operator not found"));
+            production.setOperator(operator);
         }
-        return productionRepo.save(production);
+
+        if (request.getProductionDate() != null) production.setProductionDate(request.getProductionDate());
+        if (request.getQuantityGrams() != null) production.setQuantityGrams(request.getQuantityGrams());
+        if (request.getGradePurity() != null) production.setGradePurity(request.getGradePurity());
+        if (request.getSourceBatchId() != null) production.setSourceBatchId(request.getSourceBatchId());
+
+        Production updated = productionRepository.save(production);
+        return ProductionMapper.toDto(updated);
     }
 
-    /**
-     * Get all production records.
-     */
-    public List<Production> getAllProduction() {
-        return productionRepo.findAll();
+    @Transactional(readOnly = true)
+    public List<ProductionDto> listAllProductions() {
+        return productionRepository.findAll().stream()
+                .map(ProductionMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    /**
-     * Get total gold produced this month.
-     */
-    public BigDecimal getTotalGoldThisMonth() {
-        LocalDate start = LocalDate.now().withDayOfMonth(1);
-        LocalDate end = LocalDate.now();
-        BigDecimal total = productionRepo.getTotalGoldProducedBetween(start, end);
-        return total != null ? total : BigDecimal.ZERO;
+    @Transactional(readOnly = true)
+    public ProductionDto getProduction(Long id) {
+        Production production = productionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Production record not found"));
+        return ProductionMapper.toDto(production);
     }
+
+    @Transactional
+    public void deleteProduction(Long id) {
+        productionRepository.deleteById(id);
+    }
+
 }

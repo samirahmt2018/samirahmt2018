@@ -4,6 +4,8 @@ import lombok.*;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+
 import com.gundan.terragold.enums.ExpenseCategory;
 
 @Entity
@@ -43,6 +45,5 @@ public class DailyLaborPayment extends AbstractExpense {
     private String phoneNumber;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advance_transaction_id")
-    private EmployeeAdvanceTransaction advanceTransaction;   // ← links it to the agent’s balance
-
+    private EmployeeAdvanceTransaction advanceTransaction;
 }

@@ -9,8 +9,8 @@ public record ItemTypeCreateRequest(
         @NotNull
         @NotBlank(message = "Name is required")
         String name,
-        @NotNull
-        @NotBlank(message = "Asset Id is required")
+
+        @NotNull(message = "Unit of measurement is required")
         UnitOfMeasurement unitOfMeasurement,
         String Description
 ) {}

@@ -4,6 +4,7 @@ import com.gundan.terragold.dto.request.base.FilterField;
 import com.gundan.terragold.dto.request.base.ListQueryRequest;
 import com.gundan.terragold.dto.request.base.OrFilterGroup;
 import com.gundan.terragold.dto.request.base.SortField;
+import com.gundan.terragold.enums.SortingDirection;
 import com.gundan.terragold.util.ApiResponseBuilder;
 import com.gundan.terragold.util.spec.GenericSpecification;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class GenericListService {
         Sort sort = Sort.unsorted();
         SortField sortField = req.sort();
         if (sortField != null && sortField.field() != null && !sortField.field().isEmpty()) {
-            Sort.Direction dir = "DESC".equalsIgnoreCase(sortField.direction()) ? Sort.Direction.DESC : Sort.Direction.ASC;
+            Sort.Direction dir = SortingDirection.DESC.equals(sortField.direction()) ? Sort.Direction.DESC : Sort.Direction.ASC;
             sort = Sort.by(dir, sortField.field());
         }
 
